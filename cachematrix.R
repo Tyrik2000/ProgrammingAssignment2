@@ -1,15 +1,33 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Reading the matlib package so I can use the inverse function
+library(matlib)
 
-## Write a short comment describing this function
+## MakeCacheMatrix function sets and gets the value of the square matrix and inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-
+    m <- NULL
+    set <- function(y) { 
+        x <<- y
+        m <<- NULL
+    }
+    get <- function() x
+    setinverse <- function(inverse) m <<- inv(x)  
+    getinverse <- function() m
+    list(set = set, get = get,
+         setinverse = setinverse,
+         getinverse = getinverse)
 }
 
-
-## Write a short comment describing this function
+## cacheSolve function calculates the inverse of the matrix and returns the cache from makeCacheMatrix
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    m <- x$getinverse()
+    if(!is.null(m)) {
+        message("getting cached data")
+        return(m)
+    }
+    data <- x$get()
+    m <- Solve(data, ...)
+    x$setinverse(m)
+    m
 }
+
